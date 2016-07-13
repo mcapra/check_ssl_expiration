@@ -147,7 +147,6 @@ function check_expiration($options) {
 	if(is_array($hosts))
 	{
 		foreach($hosts as $host) {
-			echo 'checking: ' . $host . PHP_EOL;
 			error_reporting(0);
 			$g = stream_context_create (array("ssl" => array("capture_peer_cert" => true)));
 			$r = stream_socket_client("ssl://" . $host . ":443", $errno, $errstr, $timeout,

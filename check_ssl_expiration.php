@@ -117,7 +117,7 @@ function check_environment() {
 
 function check_expiration($options) {
     $execout = "";
-	$hosts = [];
+	$hosts = array();
 	$warning = '';
 	$critical = '';
 	$count = 0;

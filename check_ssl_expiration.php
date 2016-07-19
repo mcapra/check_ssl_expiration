@@ -162,9 +162,9 @@ function check_expiration($options) {
 			//check > 0, if not > 0 there's no cert to check or it's malformed
 			if($data['validTo_time_t'] > 0) {
 				if(($data['validTo_time_t'] < (time() + $timeCritical)) && (!empty($options['critical'])))
-					$critical .= $host . ' | ' . $data['subject']['CN'] . ' | ' .$validTo . PHP_EOL;
+					$critical .= $host . ' -- ' . $data['subject']['CN'] . ' -- ' .$validTo . PHP_EOL;
 				else if (($data['validTo_time_t'] < (time() + $timeWarning)) && (!empty($options['warning'])))
-					$warning .= $host . ' | ' . $data['subject']['CN'] . ' | ' . $validTo . PHP_EOL;
+					$warning .= $host . ' -- ' . $data['subject']['CN'] . ' -- ' . $validTo . PHP_EOL;
 				$count++;
 			}
 		}

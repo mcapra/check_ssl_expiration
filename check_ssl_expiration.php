@@ -22,7 +22,10 @@ function parse_args() {
                    array('short' => 'a',
                          'long' => 'address', 
                          'required' => true),
-				   array('short' => 't',
+                   array('short' => 'p',
+                         'long' => 'port', 
+                         'required' => false),
+                   array('short' => 't',
                          'long' => 'timeout', 
                          'required' => false),
                    array('short' => 'w', 
@@ -142,14 +145,14 @@ function check_expiration($options) {
 	$timeCritical = 86400 * ((!empty($options['critical'])) ? $options['critical'] : 15);
 	$timeout = ((!empty($options['timeout'])) ? $options['timeout'] : 5);
 	
-
+        $port = !empty($options['port']) ? $options['port'] : 443;
 	
 	if(is_array($hosts))
 	{
 		foreach($hosts as $host) {
 			error_reporting(0);
 			$g = stream_context_create (array("ssl" => array("capture_peer_cert" => true)));
-			$r = stream_socket_client("ssl://" . $host . ":443", $errno, $errstr, $timeout,
+                        $r = stream_socket_client("ssl://" . $host . ":" . $port, $errno, $errstr, $timeout,
 				STREAM_CLIENT_CONNECT, $g);
 			$cont = stream_context_get_params($r);
 			$rawCert = $cont["options"]["ssl"]["peer_certificate"];
@@ -212,7 +215,7 @@ print(
 
 	This plugin checks the expiration date of an SSL certificate on a remote host (or group of hosts)
 
-	Usage: ".PROGRAM." -h | -a <address> [-c <critical>] [-w <warning>]
+	Usage: ".PROGRAM." -h | -a <address> [-p port] [-c <critical>] [-w <warning>]
 	NOTE: -a must be specified
 
 	Options:
@@ -220,6 +223,8 @@ print(
 	     Print this help and usage message
 	-a
 	     The address (or block) we wish to check
+	-p
+	     The port to connect to, default 443
 	-t
 	     The timeout for our checks (seconds), default is 5. If you're scanning an awful lot of IPs, try setting this to 1 or lower. 
 	-w
